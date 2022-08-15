@@ -29,8 +29,22 @@ router.post("/mail", async (req, res) => {
   var mailOptions = {
     from: frommail,
     to: tomail,
-    subject: "Sending Email using Node.js",
-    text: `sending mail using Node.js was running successfully. Hope it help you. For more code and project Please Refer my github page`,
+    subject: "Gutterguard customer query",
+    text: `Hello ${req.body.to_name},
+
+    You got a consultation request from ${req.body.first_name} ${req.body.last_name}:
+    
+    Full Name: ${req.body.first_name} ${req.body.last_name}
+    
+    Phone: ${req.body.phone}
+    
+    Email: ${req.body.email}
+    
+    Adrdess: ${req.body.address}
+    
+    Thanks,
+    
+    ${req.body.first_name} ${req.body.last_name}`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
