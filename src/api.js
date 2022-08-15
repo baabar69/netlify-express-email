@@ -1,8 +1,11 @@
 const express = require("express");
 const serverless = require("serverless-http");
+const cors = require("cors");
+var nodemailer = require("nodemailer");
 
 const app = express();
 const router = express.Router();
+app.use(cors());
 
 router.get("/", (req, res) => {
   res.json({
