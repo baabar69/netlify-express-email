@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const serverless = require("serverless-http");
 const cors = require("cors");
 var nodemailer = require("nodemailer");
@@ -6,6 +7,16 @@ var nodemailer = require("nodemailer");
 const app = express();
 const router = express.Router();
 app.use(cors());
+
+var rawBodySaver = function (req, res, buf, encoding) {
+  if (buf && buf.length) {
+    req.rawBody = buf.toString(encoding || "utf8");
+  }
+};
+
+app.use(bodyParser.json({ verify: rawBodySaver }));
+app.use(bodyParser.urlencoded({ verify: rawBodySaver, extended: true }));
+app.use(bodyParser.raw({ verify: rawBodySaver, type: "*/*" }));
 
 router.get("/", (req, res) => {
   res.json({
@@ -26,11 +37,13 @@ router.post("/mail", async (req, res) => {
     },
   });
 
+  console.log({ req: req.body });
+
   var mailOptions = {
     from: frommail,
     to: tomail,
     subject: "Gutterguard customer query",
-    text: `Hello ${req.body.to_name},
+    text: `Hello Gutterguard team,
 
     You got a consultation request from ${req.body.first_name} ${req.body.last_name}:
     
@@ -42,9 +55,7 @@ router.post("/mail", async (req, res) => {
     
     Adrdess: ${req.body.address}
     
-    Thanks,
-    
-    ${req.body.first_name} ${req.body.last_name}`,
+    Thanks,`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
