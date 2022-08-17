@@ -37,7 +37,7 @@ router.post("/mail", async (req, res) => {
     },
   });
 
-  console.log({ req: req.body });
+  // console.log({ req: req.body });
 
   var mailOptions = {
     from: frommail,
