@@ -55,6 +55,8 @@ router.post("/mail", async (req, res) => {
     
     Adrdess: ${req.body.address}
     
+    Postal Code: ${req.body.postal_code}
+    
     Thanks,`,
   };
 
